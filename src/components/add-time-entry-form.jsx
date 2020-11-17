@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import firebase from "../firebase";
 
 const AddTimeEntryForm = () => {
-  const [title, setTitle] = useState("");
-  const [time, setTime] = useState("");
+  const [temp, setTemp] = useState("");
 
   function onSubmit(e) {
     e.preventDefault();
@@ -12,35 +11,25 @@ const AddTimeEntryForm = () => {
       .firestore()
       .collection("times")
       .add({
-        title,
-        time_seconds: parseInt(time),
-        date_added: new Date(),
+        temp: parseInt(temp),
+        DateTime: new Date(),
       })
       .then(() => {
-        setTitle("");
-        setTime("");
+        setTemp("");
       });
   }
   return (
     <form onSubmit={onSubmit}>
-      <h4>Add Time Entry</h4>
+      <h4>Add Temp Entry</h4>
       <div>
-        <label>Title</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.currentTarget.value)}
-        />
-      </div>
-      <div>
-        <label>Time</label>
+        <label>Temp</label>
         <input
           type="number"
-          value={time}
-          onChange={(e) => setTime(e.currentTarget.value)}
+          value={temp}
+          onChange={(e) => setTemp(e.currentTarget.value)}
         />
       </div>
-      <button>Add Time Entry</button>
+      <button>Add Temp</button>
     </form>
   );
 };
