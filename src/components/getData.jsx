@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from "react";
-import firebase from "../firebase";
+// import React, { useState, useEffect } from "react";
+// import firebase from "../firebase";
+// // import AddTimeEntryForm from "./components/add-time-entry-form"
 
-const getData = () => {
-  const [time, setTime] = useState(null);
+// const GetData = ({ ...props }) => {
+//   //   const [dataArr, setDataArr] = useState(null);
 
-  useEffect(() => {
-    firebase.firestore().collection("time").orderBy("DateTime").onSnapshot;
-  });
+//   return <div></div>;
+// };
 
-  return (
-    <div>
-      <h2>temperature</h2>
-    </div>
-  );
-};
-export default getData;
+// export default GetData;

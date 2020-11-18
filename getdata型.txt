@@ -1,0 +1,85 @@
+import React, { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
+import "./components/add-time-entry-form";
+// import GetData from "./components/GetData";
+import firebase from "./firebase";
+
+const BarChart = ({ ...props }) => {
+  const [chartData, setChartData] = useState({});
+  const [dataArr, setDataArr] = useState(null);
+
+  const getData = () => {
+    const queryInfo = firebase
+      .firestore()
+      .collection("times")
+      .orderBy("DateTime");
+
+    queryInfo.get().then((snapshot) => {
+      const test = snapshot.docs.map((doc) => {
+        console.log(dataArr);
+        let item = doc.data();
+        let time = item.DateTime;
+        let temp = item.temp;
+        let datetime;
+
+        if (time !== undefined && temp !== undefined) {
+          datetime = new Date(time * 1000);
+
+          return {
+            time: datetime,
+            temp: temp,
+          };
+        }
+      });
+      setDataArr(
+        test.map((t) => {
+          return t.temp;
+        })
+      );
+    });
+  };
+
+  const chart = (dataArr) => {
+    setChartData({
+      labels: [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "Saturday",
+        "Sunday",
+      ],
+      datasets: [
+        {
+          label: "study hours",
+          data: dataArr,
+          backgroundColor: ["rgba(75, 192, 192, 0.6)"],
+          borderWidth: 4,
+        },
+      ],
+    });
+  };
+  useEffect(() => {
+    getData();
+    chart(dataArr);
+  }, []);
+
+  return (
+    <div className="App">
+      <h1>BarChart</h1>
+      <div style={{ height: "500px", width: "500px" }}>
+        <Line
+          data={chartData}
+          options={{
+            responsive: true,
+          }}
+        />
+      </div>
+      {/* <GetData setDataArrTest={setDataArr} /> */}
+      {/* {dataArr && dataArr.map((data) => <li key={data.temp}> {data.temp} </li>)} */}
+    </div>
+  );
+};
+
+export default BarChart;

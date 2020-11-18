@@ -1,36 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import BarChart from "../BarChart";
 import firebase from "../firebase";
 
 const AddTimeEntryForm = () => {
   const [temp, setTemp] = useState("");
+  console.log(temp);
 
-  function onSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
+    setTemp("");
     firebase
       .firestore()
       .collection("times")
       .add({
         temp: parseInt(temp),
+        // getTime: new Date().toString(),
         DateTime: new Date(),
-      })
-      .then(() => {
-        setTemp("");
+        // DateTime: new Date().toDateString(),
       });
-  }
+  };
   return (
-    <form onSubmit={onSubmit}>
-      <h4>Add Temp Entry</h4>
-      <div>
-        <label>Temp</label>
-        <input
-          type="number"
-          value={temp}
-          onChange={(e) => setTemp(e.currentTarget.value)}
-        />
-      </div>
-      <button>Add Temp</button>
-    </form>
+    <>
+      <form onSubmit={handleSubmit}>
+        <h4>Add Temp Entry</h4>
+        <div>
+          <label>Temp</label>
+          <input
+            type="number"
+            id="text"
+            // placeholder="温度"
+            value={temp}
+            onChange={(e) => setTemp(e.currentTarget.value)}
+          />
+        </div>
+        <button>Add Temp</button>
+      </form>
+      <BarChart />
+    </>
   );
 };
 
