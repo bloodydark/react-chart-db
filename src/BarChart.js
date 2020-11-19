@@ -1,73 +1,90 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import "./components/add-time-entry-form";
+// import GetData from "./components/GetData";
 import firebase from "./firebase";
 
 const BarChart = () => {
   const [chartData, setChartData] = useState({});
   const [dataArr, setDataArr] = useState(null);
   const [getdate, setGetDate] = useState(null);
+  // const WeekAgo = firebase
+  //   .firestore()
+  //   .collection("times")
+  //   .orderBy("DateTime")
+  //   .limitToLast(7);
+  // console.log(WeekAgo);
 
-  const queryInfo = firebase
-    .firestore()
-    .collection("times")
-    .orderBy("DateTime");
-  // console.log(queryInfo);
+  // const getWeekAgo = () => {
+  //   const today = new Date();
+  //   return today;
+  // };
 
-  //一週間前のデータを引っ張てくる
-  const WeekAgo = () => {
-    const today = new Date();
-    console.log(today);
+  const weekAgo = [];
+      const week = [];
+      const day = [];
+      const today = new Date();
+      for (let i = 0; i < 7; i++) {
+        week[i] = today.getMonth() + 1 + "月" + today.getDate() + "日";
+        today.setDate(today.getDate() - 1);
+        day[i] = today.getDay();
+        weekAgo.push({
+          label: week[i],
+          id: day[i],
+          figure: 0,
+        });
+      }
+      console.log(...weekAgo)
 
-    // queryInfo.get();
-  };
-  WeekAgo();
 
-  useEffect(() => {
-    queryInfo.onSnapshot((snapshot) => {
-      const test = snapshot.docs.map((doc) => {
-        let item = doc.data();
-        let time = item.DateTime;
-        let temp = item.temp;
-        let datetime;
 
-        if (time !== undefined && temp !== undefined) {
-          datetime = new Date().toDateString();
 
-          return {
-            time: datetime,
-            temp: temp,
-          };
-        }
-      });
-      setDataArr(
-        test.map((t) => {
-          return t.temp;
-        })
-      );
-      setGetDate(
-        test.map((t) => {
-          return t.time;
-        })
-      );
-    });
-  }, []);
+
+
+
+
+  // useEffect(() => {
+  //   const queryInfo = firebase
+  //     .firestore()
+  //     .collection("times")
+  //     .orderBy("DateTime")
+  //     .limitToLast(7);
+  //   queryInfo.get().then((snapshot) => {
+  //     const test = snapshot.docs.map((doc) => {
+  //       let item = doc.data();
+  //       let time = item.DateTime;
+  //       let temp = item.temp;
+  //       let datetime;
+
+  //       if (time !== undefined && temp !== undefined) {
+  //         datetime = new Date().toDateString();
+
+  //         return {
+  //           time: datetime,
+  //           temp: temp,
+  //         };
+  //       }
+  //     });
+  //     setDataArr(
+  //       test.map((t) => {
+  //         return t.temp;
+  //       })
+  //     );
+  //     setGetDate(
+  //       test.map((t) => {
+  //         return t.time;
+  //       })
+  //     );
+  //   });
+  // }, []);
 
   return (
     <div className="App">
+      {/* <GetData /> */}
       <div style={{ height: "500px", width: "500px" }}>
         <Line
           data={{
             labels: getdate,
-            // labels: [
-            //   "Mondidayay",
-            //   "Tuesday",
-            //   "Wednesday",
-            //   "Thursday",
-            //   "Friday",
-            //   "Saturday",
-            //   "Sunday",
-            // ],
             datasets: [
               {
                 label: " # Your trajectory",
