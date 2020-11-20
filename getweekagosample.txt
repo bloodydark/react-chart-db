@@ -7,74 +7,42 @@ import firebase from "./firebase";
 const BarChart = () => {
   const [chartData, setChartData] = useState({});
   const [dataArr, setDataArr] = useState(null);
-  const [getDate, setGetDate] = useState(null);
-  // const [items, setItems] = useState(null);
-  const db = firebase.firestore().collection("times");
-  // console.log(getDate);
-
-  // useEffect(() => {
-  //   // const startDate = new Date("Fri Nov 20, 2020");
-  //   // const endDate = new Date("Fri Nov 19, 2020");
-  //   // db.orderBy("DateTime", "asc")
-  //   // .startAt(startDate)
-  //   // .endAt(endDate)
-  //   db.onSnapshot((querySnapshot) => {
-  //     const items = querySnapshot.docs.map((doc) => {
-  //       return doc.data();
-  //     });
-  //     setItems(items);
-  //     console.log(items);
-  //   });
-  // }, []);
-
-  // const change = getDate.getTime;
-  // console.log(change);
-
-  const weekAgo = [];
-  const week = [];
-  const day = [];
-  const today = new Date();
-  for (let i = 0; i < 7; i++) {
-    week[i] = today.getMonth() + 1 + "月" + today.getDate() + "日";
-    today.setDate(today.getDate() - 1);
-    day[i] = today.getDay();
-    weekAgo.push({
-      label: week[i],
-      id: day[i],
-      figure: 0,
-    });
-  }
-  // console.log(...weekAgo);
-
-  const figureList = weekAgo.map((el) => el.figure);
-  // console.log(figureList);
-  const moreWeek = new Date().getDate() - 7;
-  // console.log(moreWeek);
-
-  const reversedWeek = week.reverse();
-  // console.log(reversedWeek);
-
-  // const getgetday = firebase
+  const [getdate, setGetDate] = useState(null);
+  // const WeekAgo = firebase
   //   .firestore()
   //   .collection("times")
   //   .orderBy("DateTime")
-  //   .limitToLast(3);
-  // console.log(getgetday);
+  //   .limitToLast(7);
+  // console.log(WeekAgo);
 
-  // const timestamp =  firebase.firestore.Timestamp.fromDate(new Date())
-  //   console.log(timestamp)
-  // let queryInfo = firebase.firestore().collection("times").where("DateTime", ">", moreWeek )
-  useEffect(() => {
-    db.orderBy("DateTime").onSnapshot((snapshot) => {
-      const getDate = snapshot.docs.map((doc) => {
-        let item = doc.data();
-        let changeTimeStamp = new Date(item.getTime);
-        console.log(changeTimeStamp);
-        return changeTimeStamp;
-      });
-    });
-  }, []);
-  // console.log(getDate);
+  // const getWeekAgo = () => {
+  //   const today = new Date();
+  //   return today;
+  // };
+
+  const weekAgo = [];
+      const week = [];
+      const day = [];
+      const today = new Date();
+      for (let i = 0; i < 7; i++) {
+        week[i] = today.getMonth() + 1 + "月" + today.getDate() + "日";
+        today.setDate(today.getDate() - 1);
+        day[i] = today.getDay();
+        weekAgo.push({
+          label: week[i],
+          id: day[i],
+          figure: 0,
+        });
+      }
+      console.log(...weekAgo)
+
+
+
+
+
+
+
+
   // useEffect(() => {
   //   const queryInfo = firebase
   //     .firestore()
@@ -89,7 +57,7 @@ const BarChart = () => {
   //       let datetime;
 
   //       if (time !== undefined && temp !== undefined) {
-  //         datetime =
+  //         datetime = new Date().toDateString();
 
   //         return {
   //           time: datetime,
@@ -105,7 +73,7 @@ const BarChart = () => {
   //     setGetDate(
   //       test.map((t) => {
   //         return t.time;
-  //       })j
+  //       })
   //     );
   //   });
   // }, []);
@@ -116,11 +84,11 @@ const BarChart = () => {
       <div style={{ height: "500px", width: "500px" }}>
         <Line
           data={{
-            labels: reversedWeek,
+            labels: getdate,
             datasets: [
               {
                 label: " # Your trajectory",
-                data: figureList,
+                data: dataArr,
                 backgroundColor: [
                   "rgba(255, 99, 132, 0.2)",
                   "rgba(54, 162, 235, 0.2)",

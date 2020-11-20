@@ -16,6 +16,10 @@ const AddTimeEntryForm = () => {
         temp: parseInt(temp),
         // getTime: new Date().toString(),
         DateTime: new Date(),
+        // getTime: new Date().getDate(),
+        getTime: new Date().valueOf(),
+        // catchDay: new Date().
+        // getDay: new Date().toDateString(),
         // DateTime: new Date().toDateString(),
       });
   };
@@ -27,7 +31,7 @@ const AddTimeEntryForm = () => {
           <label>Temp</label>
           <input
             type="number"
-            id="text"
+            id="number"
             // placeholder="温度"
             value={temp}
             onChange={(e) => setTemp(e.currentTarget.value)}
