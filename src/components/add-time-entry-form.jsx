@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BarChart from "../BarChart";
 import firebase from "../firebase";
+// import dayjs from "dayjs";
 
 const AddTimeEntryForm = () => {
   const [temp, setTemp] = useState("");
@@ -14,11 +15,13 @@ const AddTimeEntryForm = () => {
       .collection("times")
       .add({
         temp: parseInt(temp),
+        // hope: dayjs(),
         // getTime: new Date().toString(),
         DateTime: new Date(),
         // getTime: new Date().getDate(),
+
         getTime: new Date().valueOf(),
-        hours: 5,
+        // hours: 5,
         // catchDay: new Date().
         // getDay: new Date().toDateString(),
         // DateTime: new Date().toDateString(),

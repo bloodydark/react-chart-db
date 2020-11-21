@@ -3,8 +3,12 @@ import { Line } from "react-chartjs-2";
 import "./components/add-time-entry-form";
 // import GetData from "./components/GetData";
 import firebase from "./firebase";
+import dayjs from "dayjs";
 
 const BarChart = () => {
+  // const now = dayjs();
+  // console.log(now.subtract(7, "day").format());
+  // console.log(now);
   const [chartData, setChartData] = useState({});
   const [dataArr, setDataArr] = useState(null);
   const [getDate, setGetDate] = useState(null);
@@ -36,6 +40,7 @@ const BarChart = () => {
   // console.log(week);
   const day = [];
   const today = new Date();
+  // console.log(today);
   for (let i = 0; i < 7; i++) {
     week[i] = today.getMonth() + 1 + "月" + today.getDate() + "日";
     today.setDate(today.getDate() - 1);
@@ -66,27 +71,62 @@ const BarChart = () => {
   // const timestamp =  firebase.firestore.Timestamp.fromDate(new Date())
   //   console.log(timestamp)
   // let queryInfo = firebase.firestore().collection("times").where("DateTime", ">", moreWeek )
+  let now = dayjs();
+  let weekAgo2 = now.subtract(7, "day").format();
+  // console.log(weekAgo2);
+
   useEffect(() => {
     db.orderBy("DateTime").onSnapshot((snapshot) => {
       const test = snapshot.docs.map((doc) => {
         let item = doc.data();
         // console.log(item);
-        let item2 = new Date(item.getTime);
+        let item2 = dayjs(item.getTime);
         item.getTime = item2;
-
-        for(let i=0; i < 7; i++) {
-          
-
+        // console.log(item);
+        if (item2.isAfter(weekAgo2) ) {
+          console.log("Ok!");
+          console.log(item);
+          return item;
+        } else {
+          console.log("NO?");
         }
-        console.log(item);
+        // let item3 = item2.getDate();
+        // console.log(item);
 
-        
-        return item;
+        // if (item2 < now.subtract(3, "day").format()) {
+        //   console.log(item2);
+        // } else {
+        //   console.log("not weekago");
+        // }
+        // if (item > )
+        // console.log(now);
+
+        //   console.log(item2);
+        // }
+
+        // let now = new Date()
+
+        // const weekJ = [];
+        // const dayJ = [];
+        // const todayJ = new Date();
+        // for (let i = 0; i < 7; i++) {
+        // weekJ[i] = todayJ.getMonth() + 1 + "月" + todayJ.getDate() + "日";
+        // todayJ.setDate(todayJ.getDate() - 1);
+        // dayJ[i] = todayJ.getDay();
+        // }
+        // weekAgo.push({
+        //   label: week[i],
+        //   id: day[i],
+        //   figure: 0,
+        // });
+        // console.log(item);
+        // if (item.getTime)
+        // return item;
+
         // console.log(item);
       });
     });
   }, []);
-
 
   // useEffect(() => {
   //   db.orderBy("DateTime")
