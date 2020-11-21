@@ -18,6 +18,7 @@ const AddTimeEntryForm = () => {
         DateTime: new Date(),
         // getTime: new Date().getDate(),
         getTime: new Date().valueOf(),
+        hours: 5,
         // catchDay: new Date().
         // getDay: new Date().toDateString(),
         // DateTime: new Date().toDateString(),

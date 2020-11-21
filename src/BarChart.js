@@ -18,7 +18,8 @@ const BarChart = () => {
   //   // db.orderBy("DateTime", "asc")
   //   // .startAt(startDate)
   //   // .endAt(endDate)
-  //   db.onSnapshot((querySnapshot) => {
+  //   db.onSnapshot((querySnapshot) =>
+  //  {
   //     const items = querySnapshot.docs.map((doc) => {
   //       return doc.data();
   //     });
@@ -66,12 +67,34 @@ const BarChart = () => {
   // let queryInfo = firebase.firestore().collection("times").where("DateTime", ">", moreWeek )
   useEffect(() => {
     db.orderBy("DateTime").onSnapshot((snapshot) => {
-      const getDate = snapshot.docs.map((doc) => {
+      const test = snapshot.docs.map((doc) => {
         let item = doc.data();
-        let changeTimeStamp = new Date(item.getTime);
-        console.log(changeTimeStamp);
-        return changeTimeStamp;
+        // console.log(item);
+        let item2 = new Date(item.getTime);
+        item.getTime = item2;
+        // console.log(item);
+        console.log(item);
+        return item;
       });
+
+
+      
+      // setGetDate(
+      //   test.map((el) => {
+      //     return el.new Date(item)
+      //   })
+      // )
+      // setGetDate(
+      //   test.map((el) => {
+      //     return el.new Date(item2)
+      //   })
+      // )
+      // getDate(
+      //   test2.map((el) => {
+      //     console.log(el.getTime);
+      //     return el.getTime;
+      //   })
+      // );
     });
   }, []);
   // console.log(getDate);
@@ -82,7 +105,7 @@ const BarChart = () => {
   //     .orderBy("DateTime")
   //     .limitToLast(7);
   //   queryInfo.get().then((snapshot) => {
-  //     const test = snapshot.docs.map((doc) => {
+  //     const test2 = snapshot.docs.map((doc) => {
   //       let item = doc.data();
   //       let time = item.DateTime;
   //       let temp = item.temp;
@@ -98,14 +121,14 @@ const BarChart = () => {
   //       }
   //     });
   //     setDataArr(
-  //       test.map((t) => {
+  //       test2.map((t) => {
   //         return t.temp;
   //       })
   //     );
   //     setGetDate(
-  //       test.map((t) => {
+  //       test2.map((t) => {
   //         return t.time;
-  //       })j
+  //       })
   //     );
   //   });
   // }, []);
