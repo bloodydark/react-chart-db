@@ -33,6 +33,7 @@ const BarChart = () => {
 
   const weekAgo = [];
   const week = [];
+  // console.log(week);
   const day = [];
   const today = new Date();
   for (let i = 0; i < 7; i++) {
@@ -72,31 +73,41 @@ const BarChart = () => {
         // console.log(item);
         let item2 = new Date(item.getTime);
         item.getTime = item2;
-        // console.log(item);
+
+        for(let i=0; i < 7; i++) {
+          
+
+        }
         console.log(item);
+
+        
         return item;
+        // console.log(item);
       });
-
-
-      
-      // setGetDate(
-      //   test.map((el) => {
-      //     return el.new Date(item)
-      //   })
-      // )
-      // setGetDate(
-      //   test.map((el) => {
-      //     return el.new Date(item2)
-      //   })
-      // )
-      // getDate(
-      //   test2.map((el) => {
-      //     console.log(el.getTime);
-      //     return el.getTime;
-      //   })
-      // );
     });
   }, []);
+
+
+  // useEffect(() => {
+  //   db.orderBy("DateTime")
+  //     // .where("item2", ">=", today - 7)
+  //     .onSnapshot((snapshot) => {
+  //       const test2 = snapshot.docs.map((doc) => {
+  //         const store = doc.data();
+  //         console.log(store);
+  //         return store;
+  //       });
+  //     });
+  // }, []);
+
+  // let now = new Date();
+  // let before = new Date();
+  // const getWeek = [];
+  // console.log(getWeek);
+  // for (let i = 0; i < 7; i++) {
+  //   getWeek.unshift(now.getDate() - i);
+  // }
+
   // console.log(getDate);
   // useEffect(() => {
   //   const queryInfo = firebase
