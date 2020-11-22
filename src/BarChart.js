@@ -5,42 +5,52 @@ import "./components/add-time-entry-form";
 import firebase from "./firebase";
 import dayjs from "dayjs";
 
+console.log("sato");
 const BarChart = () => {
-  // const now = dayjs();
-  // console.log(now.subtract(7, "day").format());
-  // console.log(now);
-  const [chartData, setChartData] = useState({});
-  const [dataArr, setDataArr] = useState(null);
-  const [getDate, setGetDate] = useState(null);
+  // const [chartData, setChartData] = useState({});
+  // const [dataArr, setDataArr] = useState(null);
+  // const [getDate, setGetDate] = useState(null);
   // const [items, setItems] = useState(null);
   const db = firebase.firestore().collection("times");
-  // console.log(getDate);
 
-  // useEffect(() => {
-  //   // const startDate = new Date("Fri Nov 20, 2020");
-  //   // const endDate = new Date("Fri Nov 19, 2020");
-  //   // db.orderBy("DateTime", "asc")
-  //   // .startAt(startDate)
-  //   // .endAt(endDate)
-  //   db.onSnapshot((querySnapshot) =>
-  //  {
-  //     const items = querySnapshot.docs.map((doc) => {
-  //       return doc.data();
-  //     });
-  //     setItems(items);
-  //     console.log(items);
-  //   });
-  // }, []);
+  /////////////////////////////////////
+  //こちらはgetdayと日付が一致している
+  ////////////////////////////////////
+  const hope = [];
+  // const list2 = hope.map((el) => el.idDay);
+  // console.log(list2);
+  console.log(hope);
+  const now2 = new Date();
+  const tomorrow = now2.setDate(now2.getDate() + 1);
+  const infoWeek = [];
+  const infoDay = [];
+  let addDate = 1;
+  let max = 7;
+  for (let i = 0; i < max; i++) {
+    now2.setDate(now2.getDate() - addDate);
+    infoWeek[i] = now2.getMonth() + 1 + "/" + now2.getDate();
+    infoDay[i] = now2.getDay();
+    hope.push({
+      la: infoWeek[i],
+      idDay: infoDay[i],
+      cha: 0,
+    });
+  }
 
-  // const change = getDate.getTime;
-  // console.log(change);
-
+  //////////////////////////////////////////
+  //こちらはgetdayと日付が一致していない！！！
+  ///////////////////////////////////////////
   const weekAgo = [];
+  console.log(weekAgo);
+  // const list = weekAgo.map((el) => el.id);
+  // console.log(list);
   const week = [];
-  // console.log(week);
+  //日付の順番を右から左にする処理
+  const reversedWeek = week.reverse();
+
   const day = [];
   const today = new Date();
-  // console.log(today);
+
   for (let i = 0; i < 7; i++) {
     week[i] = today.getMonth() + 1 + "月" + today.getDate() + "日";
     today.setDate(today.getDate() - 1);
@@ -51,102 +61,33 @@ const BarChart = () => {
       figure: 0,
     });
   }
-  // console.log(...weekAgo);
 
-  const figureList = weekAgo.map((el) => el.figure);
-  // console.log(figureList);
-  const moreWeek = new Date().getDate() - 7;
-  // console.log(moreWeek);
-
-  const reversedWeek = week.reverse();
-  // console.log(reversedWeek);
-
-  // const getgetday = firebase
-  //   .firestore()
-  //   .collection("times")
-  //   .orderBy("DateTime")
-  //   .limitToLast(3);
-  // console.log(getgetday);
-
-  // const timestamp =  firebase.firestore.Timestamp.fromDate(new Date())
-  //   console.log(timestamp)
-  // let queryInfo = firebase.firestore().collection("times").where("DateTime", ">", moreWeek )
-  let now = dayjs();
+  let now = dayjs(); //dayjsライブラリを使用
   let weekAgo2 = now.subtract(7, "day").format();
-  // console.log(weekAgo2);
 
   useEffect(() => {
     db.orderBy("DateTime").onSnapshot((snapshot) => {
       const test = snapshot.docs.map((doc) => {
         let item = doc.data();
-        // console.log(item);
         let item2 = dayjs(item.getTime);
         item.getTime = item2;
-        // console.log(item);
-        if (item2.isAfter(weekAgo2) ) {
-          console.log("Ok!");
+        const item3 = item2.day();
+        // console.log(item3);
+        if (item2.isAfter(weekAgo2)) {
+          console.log("一週間以内のデータだよ！！！");
           console.log(item);
           return item;
         } else {
-          console.log("NO?");
+          console.log("NOOOOOOOOOOOOOOO!!!");
         }
-        // let item3 = item2.getDate();
-        // console.log(item);
-
-        // if (item2 < now.subtract(3, "day").format()) {
-        //   console.log(item2);
-        // } else {
-        //   console.log("not weekago");
-        // }
-        // if (item > )
-        // console.log(now);
-
-        //   console.log(item2);
-        // }
-
-        // let now = new Date()
-
-        // const weekJ = [];
-        // const dayJ = [];
-        // const todayJ = new Date();
-        // for (let i = 0; i < 7; i++) {
-        // weekJ[i] = todayJ.getMonth() + 1 + "月" + todayJ.getDate() + "日";
-        // todayJ.setDate(todayJ.getDate() - 1);
-        // dayJ[i] = todayJ.getDay();
-        // }
-        // weekAgo.push({
-        //   label: week[i],
-        //   id: day[i],
-        //   figure: 0,
-        // });
-        // console.log(item);
-        // if (item.getTime)
-        // return item;
-
-        // console.log(item);
       });
     });
   }, []);
 
-  // useEffect(() => {
-  //   db.orderBy("DateTime")
-  //     // .where("item2", ">=", today - 7)
-  //     .onSnapshot((snapshot) => {
-  //       const test2 = snapshot.docs.map((doc) => {
-  //         const store = doc.data();
-  //         console.log(store);
-  //         return store;
-  //       });
-  //     });
-  // }, []);
+  //ここはdotsデータの勉強時間が入る
+  const figureList = weekAgo.map((el) => el.figure);
 
-  // let now = new Date();
-  // let before = new Date();
-  // const getWeek = [];
-  // console.log(getWeek);
-  // for (let i = 0; i < 7; i++) {
-  //   getWeek.unshift(now.getDate() - i);
-  // }
+  
 
   // console.log(getDate);
   // useEffect(() => {
