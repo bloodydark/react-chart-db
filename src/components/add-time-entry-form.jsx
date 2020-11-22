@@ -21,6 +21,9 @@ const AddTimeEntryForm = () => {
         // getTime: new Date().getDate(),
 
         getTime: new Date().valueOf(),
+        // getTT: new Date().valueOf(),
+        // getTPO: new Date().toJSON(),
+
         // hours: 5,
         // catchDay: new Date().
         // getDay: new Date().toDateString(),

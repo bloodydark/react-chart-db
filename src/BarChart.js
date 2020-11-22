@@ -5,21 +5,18 @@ import "./components/add-time-entry-form";
 import firebase from "./firebase";
 import dayjs from "dayjs";
 
-console.log("sato");
 const BarChart = () => {
   // const [chartData, setChartData] = useState({});
   // const [dataArr, setDataArr] = useState(null);
   // const [getDate, setGetDate] = useState(null);
   // const [items, setItems] = useState(null);
   const db = firebase.firestore().collection("times");
+  // console.log(new Date(1606009436321));
 
   /////////////////////////////////////
   //こちらはgetdayと日付が一致している
   ////////////////////////////////////
   const hope = [];
-  // const list2 = hope.map((el) => el.idDay);
-  // console.log(list2);
-  console.log(hope);
   const now2 = new Date();
   const tomorrow = now2.setDate(now2.getDate() + 1);
   const infoWeek = [];
@@ -36,12 +33,17 @@ const BarChart = () => {
       cha: 0,
     });
   }
+  // console.log(hope);
+
+  // const list2 = hope.map((el) => el.idDay);
+  // console.log(list2);
 
   //////////////////////////////////////////
   //こちらはgetdayと日付が一致していない！！！
   ///////////////////////////////////////////
+
   const weekAgo = [];
-  console.log(weekAgo);
+  // console.log(weekAgo);
   // const list = weekAgo.map((el) => el.id);
   // console.log(list);
   const week = [];
@@ -65,29 +67,35 @@ const BarChart = () => {
   let now = dayjs(); //dayjsライブラリを使用
   let weekAgo2 = now.subtract(7, "day").format();
 
+  let agoDate = new Date();
+  let agoWeek = agoDate.setDate(agoDate.getDate() - 7);
+  // console.log(agoWeek);
+
   useEffect(() => {
-    db.orderBy("DateTime").onSnapshot((snapshot) => {
-      const test = snapshot.docs.map((doc) => {
-        let item = doc.data();
-        let item2 = dayjs(item.getTime);
-        item.getTime = item2;
-        const item3 = item2.day();
-        // console.log(item3);
-        if (item2.isAfter(weekAgo2)) {
-          console.log("一週間以内のデータだよ！！！");
+    db.where("DateTime", ">", firebase.firestore.Timestamp.fromDate(agoDate))
+      .orderBy("DateTime")
+      .onSnapshot((snapshot) => {
+        const test = snapshot.docs.map((doc) => {
+          let item = doc.data();
           console.log(item);
-          return item;
-        } else {
-          console.log("NOOOOOOOOOOOOOOO!!!");
-        }
+          let item2 = dayjs(item.getTime);
+          item.getTime = item2;
+          const item3 = item2.day();
+
+          // console.log(item3);
+          // if (item2.isAfter(weekAgo2)) {
+          //   console.log("一週間以内のデータだよ！！！");
+          //   // console.log(item);
+          //   return item;
+          // } else {
+          //   console.log("NOOOOOOOOOOOOOOO!!!");
+          // }
+        });
       });
-    });
   }, []);
 
   //ここはdotsデータの勉強時間が入る
   const figureList = weekAgo.map((el) => el.figure);
-
-  
 
   // console.log(getDate);
   // useEffect(() => {
