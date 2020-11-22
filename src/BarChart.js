@@ -16,23 +16,23 @@ const BarChart = () => {
   /////////////////////////////////////
   //こちらはgetdayと日付が一致している
   ////////////////////////////////////
-  const hope = [];
-  const now2 = new Date();
-  const tomorrow = now2.setDate(now2.getDate() + 1);
-  const infoWeek = [];
-  const infoDay = [];
-  let addDate = 1;
-  let max = 7;
-  for (let i = 0; i < max; i++) {
-    now2.setDate(now2.getDate() - addDate);
-    infoWeek[i] = now2.getMonth() + 1 + "/" + now2.getDate();
-    infoDay[i] = now2.getDay();
-    hope.push({
-      la: infoWeek[i],
-      idDay: infoDay[i],
-      cha: 0,
-    });
-  }
+  // const hope = [];
+  // const now2 = new Date();
+  // const tomorrow = now2.setDate(now2.getDate() + 1);
+  // const infoWeek = [];
+  // const infoDay = [];
+  // let addDate = 1;
+  // let max = 7;
+  // for (let i = 0; i < max; i++) {
+  //   now2.setDate(now2.getDate() - addDate);
+  //   infoWeek[i] = now2.getMonth() + 1 + "/" + now2.getDate();
+  //   infoDay[i] = now2.getDay();
+  //   hope.push({
+  //     la: infoWeek[i],
+  //     idDay: infoDay[i],
+  //     cha: 0,
+  //   });
+  // }
   // console.log(hope);
 
   // const list2 = hope.map((el) => el.idDay);
@@ -42,37 +42,45 @@ const BarChart = () => {
   //こちらはgetdayと日付が一致していない！！！
   ///////////////////////////////////////////
 
-  const weekAgo = [];
-  // console.log(weekAgo);
-  // const list = weekAgo.map((el) => el.id);
-  // console.log(list);
-  const week = [];
-  //日付の順番を右から左にする処理
-  const reversedWeek = week.reverse();
+  // const weekAgo = [];
+  // // console.log(weekAgo);
+  // // const list = weekAgo.map((el) => el.id);
+  // // console.log(list);
+  // const week = [];
+  // //日付の順番を右から左にする処理
+  // const reversedWeek = week.reverse();
 
-  const day = [];
-  const today = new Date();
+  // const day = [];
+  // const today = new Date();
 
-  for (let i = 0; i < 7; i++) {
-    week[i] = today.getMonth() + 1 + "月" + today.getDate() + "日";
-    today.setDate(today.getDate() - 1);
-    day[i] = today.getDay();
-    weekAgo.push({
-      label: week[i],
-      id: day[i],
-      figure: 0,
-    });
-  }
+  // for (let i = 0; i < 7; i++) {
+  //   week[i] = today.getMonth() + 1 + "月" + today.getDate() + "日";
+  //   today.setDate(today.getDate() - 1);
+  //   day[i] = today.getDay();
+  //   weekAgo.push({
+  //     label: week[i],
+  //     id: day[i],
+  //     figure: 0,
+  //   });
+  // }
 
-  let now = dayjs(); //dayjsライブラリを使用
-  let weekAgo2 = now.subtract(7, "day").format();
+  // let now = dayjs(); //dayjsライブラリを使用
+  // let weekAgo2 = now.subtract(7, "day").format();
 
   let agoDate = new Date();
+  console.log(agoDate);
   let agoWeek = agoDate.setDate(agoDate.getDate() - 7);
+  let zero = agoDate.set(0)
+  console.log(new Date(zero));
+  console.log(new Date(agoWeek));
   // console.log(agoWeek);
 
   useEffect(() => {
-    db.where("DateTime", ">", firebase.firestore.Timestamp.fromDate(agoDate))
+    db.where(
+      "DateTime",
+      ">",
+      firebase.firestore.Timestamp.fromDate(new Date(agoWeek))
+    )
       .orderBy("DateTime")
       .onSnapshot((snapshot) => {
         const test = snapshot.docs.map((doc) => {
@@ -95,7 +103,7 @@ const BarChart = () => {
   }, []);
 
   //ここはdotsデータの勉強時間が入る
-  const figureList = weekAgo.map((el) => el.figure);
+  // const figureList = weekAgo.map((el) => el.figure);
 
   // console.log(getDate);
   // useEffect(() => {
@@ -139,11 +147,11 @@ const BarChart = () => {
       <div style={{ height: "500px", width: "500px" }}>
         <Line
           data={{
-            labels: reversedWeek,
+            // labels: reversedWeek,
             datasets: [
               {
                 label: " # Your trajectory",
-                data: figureList,
+                // data: figureList,
                 backgroundColor: [
                   "rgba(255, 99, 132, 0.2)",
                   "rgba(54, 162, 235, 0.2)",
