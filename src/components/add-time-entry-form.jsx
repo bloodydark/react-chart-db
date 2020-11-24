@@ -18,6 +18,7 @@ const AddTimeEntryForm = () => {
         // hope: dayjs(),
         // getTime: new Date().toString(),
         DateTime: new Date(),
+        getday: new Date().getDay(),
         // getTime: new Date().getDate(),
 
         getTime: new Date().valueOf(),

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import "./components/add-time-entry-form";
-// import GetData from "./components/GetData";
 import firebase from "./firebase";
-// import dayjs from "dayjs";
 
 const BarChart = () => {
   const db = firebase.firestore().collection("times");
+  const [weekData, set_weekData] = useState([]);
 
   const zeroAdjust = () => {
     let agoDate = new Date();
@@ -25,13 +24,14 @@ const BarChart = () => {
   //こちらはgetdayと日付が一致している
   ////////////////////////////////////
   const jsWeekAgo = [];
+
   let today = new Date();
-  let tomorrow = today.setDate(today.getDate() + 1);
+  today.setDate(today.getDate() + 1);
   let infoWeek = [];
   let infoDay = [];
   let subtract = 1;
-  let max = 7;
-  for (let i = 0; i < max; i++) {
+  let max = 6;
+  for (let i = 0; i <= max; i++) {
     today.setDate(today.getDate() - subtract);
     infoWeek[i] = today.getMonth() + 1 + "/" + today.getDate();
     infoDay[i] = today.getDay();
@@ -41,11 +41,14 @@ const BarChart = () => {
       initNum: 0,
     });
   }
-//   console.log(...jsWeekAgo.jsGetDay);
+  //   console.log(...jsWeekAgo.jsGetDay);
   let reversedWeek = infoWeek.reverse();
   console.log(reversedWeek);
   const getDayList = jsWeekAgo.map((el) => el.jsGetDay);
   //   console.log(getDayList);
+
+  //   const useWeekAgo = [...jsWeekAgo];
+  console.log(jsWeekAgo);
 
   useEffect(() => {
     db.where(
@@ -57,12 +60,13 @@ const BarChart = () => {
       .onSnapshot((snapshot) => {
         const test = snapshot.docs.map((doc) => {
           let item = doc.data();
-          // console.log(item);
-          let item2 = new Date(item.getTime).getDay();
-          console.log(item2);
+          let getDay = item.getDay;
+          let hours = item.temp;
 
-          // if (item2 === )
+          //   if (getDay === )
+          return item;
         });
+        console.log(test);
       });
   }, []);
 
