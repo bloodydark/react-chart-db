@@ -5,7 +5,7 @@ import firebase from "./firebase";
 
 const BarChart = () => {
   const db = firebase.firestore().collection("times");
-  const [weekData, set_weekData] = useState([]);
+  const [filledWeek, set_filledWeek] = useState([]);
 
   const zeroAdjust = () => {
     let agoDate = new Date();
@@ -23,34 +23,36 @@ const BarChart = () => {
   /////////////////////////////////////
   //こちらはgetdayと日付が一致している
   ////////////////////////////////////
-  const jsWeekAgo = [];
+  const init_arrayWeeks = () => {
+    const jsWeekAgo = [];
+    let today = new Date();
+    today.setDate(today.getDate() + 1);
+    const infoWeek = [];
+    const infoDay = [];
+    const subtract = 1;
+    const max = 6;
+    for (let i = 0; i <= max; i++) {
+      today.setDate(today.getDate() - subtract);
+      infoWeek[i] = today.getMonth() + 1 + "/" + today.getDate();
+      infoDay[i] = today.getDay();
+      jsWeekAgo.push({
+        label: infoWeek[i],
+        jsGetDay: infoDay[i],
+        initNum: 0,
+      });
+    }
+    const reversedWeek = infoWeek.reverse();
+    const weeksObj = {
+      weekLabel: reversedWeek,
+      weekData: jsWeekAgo,
+    };
+    return weeksObj;
+  };
 
-  let today = new Date();
-  today.setDate(today.getDate() + 1);
-  let infoWeek = [];
-  let infoDay = [];
-  let subtract = 1;
-  let max = 6;
-  for (let i = 0; i <= max; i++) {
-    today.setDate(today.getDate() - subtract);
-    infoWeek[i] = today.getMonth() + 1 + "/" + today.getDate();
-    infoDay[i] = today.getDay();
-    jsWeekAgo.push({
-      label: infoWeek[i],
-      jsGetDay: infoDay[i],
-      initNum: 0,
-    });
-  }
-  //   console.log(...jsWeekAgo.jsGetDay);
-  let reversedWeek = infoWeek.reverse();
-  console.log(reversedWeek);
-  const getDayList = jsWeekAgo.map((el) => el.jsGetDay);
-  //   console.log(getDayList);
-
-  //   const useWeekAgo = [...jsWeekAgo];
-  console.log(jsWeekAgo);
+  // const getDayList = init_Week().map((el) => el.jsGetDay);
 
   useEffect(() => {
+    set_filledWeek(init_arrayWeeks().weekData);
     db.where(
       "DateTime",
       ">",
@@ -58,17 +60,25 @@ const BarChart = () => {
     )
       .orderBy("DateTime")
       .onSnapshot((snapshot) => {
-        const test = snapshot.docs.map((doc) => {
-          let item = doc.data();
-          let getDay = item.getDay;
-          let hours = item.temp;
-
-          //   if (getDay === )
-          return item;
+        console.log(snapshot);
+        snapshot.docs.map((doc) => {
+          console.log("hello");
+          const item = doc.data();
+          console.log(item);
+          const receivedDay = item.getday;
+          const hours = item.temp;
+          // console.log(filledWeek.length);
+          for (let i = 0; i < filledWeek.length; i++) {
+            const tempWeek = filledWeek;
+            if (receivedDay === filledWeek[i].jsGetDay) {
+              set_filledWeek((tempWeek[i].initNum = hours));
+            }
+            console.log(tempWeek);
+          }
         });
-        console.log(test);
       });
   }, []);
+  // console.log(filledWeek);
 
   return (
     <div className="App">
@@ -76,7 +86,7 @@ const BarChart = () => {
       <div style={{ height: "500px", width: "500px" }}>
         <Line
           data={{
-            labels: reversedWeek,
+            labels: init_arrayWeeks().weekLabel,
             datasets: [
               {
                 label: " # Your trajectory",
